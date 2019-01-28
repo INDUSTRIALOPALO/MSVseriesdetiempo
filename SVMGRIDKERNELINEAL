@@ -9,7 +9,6 @@ library(hydroGOF)
 ##DIVISION DATOS PRUEBA Y VALIDACION 
 class(Valor_Indices)
 Datos <- as.data.frame(Valor_Indices)
-class(Datos)
 ind <- sample(2, nrow(Datos), replace= TRUE, prob = c(0.7,0.3))
 TrainSet <- Datos[ind == 1,]
 TestSet <-Datos[ind == 2,]
@@ -21,18 +20,15 @@ t <- proc.time()
 TunecolL <- tune(svm, Valor ~ t1 + t2, data=TrainSet, kernel="linear", type = "eps-regression", ranges = list(cost=seq(0.1, 50,by=1), epsilon= seq(0, 1,by=0.4)))
 proc.time()-t
 bestmodelL = TunecolL$best.model
-summary(bestmodelL)
 -------------------------------------------------------------------------
 ##PREDICTOR 
 Pred <- predict(bestmodelL, TestSet)
 -------------------------------------------------------------------------
 ##ERROR
 rmse <- rmse(TestSet$Valor, Pred)
-rmse
 cor <- cor(TestSet$Valor, Pred)^2
-cor
 --------------------------------------------------------------------------
 ##GRAFICA
-plot(TestSet$Valor, main = "Kernel Lineal", xlab = "D?a", ylab = "ValorColcap")
+plot(TestSet$Valor, main = "Kernel Lineal", xlab = "Dia", ylab = "ValorColcap")
 lines(Pred, col= "green")
 
